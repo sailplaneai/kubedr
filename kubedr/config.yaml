@@ -1,0 +1,47 @@
+baseURL: 'http://roboweb.app/'
+languageCode: 'en-us'
+title: 'Roboweb'
+theme: "ananke"
+# see https://gohugo.io/templates/menu-templates/#section-menu-for-lazy-bloggers
+sectionPagesMenu: main
+menu:
+  custom:
+  - name: Home
+    url: /
+    weight: 1
+  - name: Contact
+    url: /contact
+    weight: 2
+  - name: FAQ
+    url: /faq
+    weight: 4
+
+
+
+params:
+  env: production
+  description: "An AI Assistant for Exploratory Programmingßßß"
+  enableEmoji: true
+  images:
+    - cover.png
+  toc: true
+
+tableOfContents:
+  endLevel: 3
+  ordered: false
+  # H1 is the page title so not worth including it.
+  startLevel: 2
+  
+# https://discourse.gohugo.io/t/raw-html-getting-omitted-in-0-60-0/22032/15
+# Needed to render html shortcodes used for videos
+markup:  
+  goldmark:
+    parser:
+      attribute:
+        block: false
+        title: true
+      autoHeadingID: true
+      autoHeadingIDType: github
+      wrapStandAloneImageWithinParagraph: true
+    renderer:
+      unsafe: true
