@@ -1,6 +1,6 @@
-baseURL: 'http://roboweb.app/'
+baseURL: 'http://kubedr.ai/'
 languageCode: 'en-us'
-title: 'Roboweb'
+title: 'KubeDoctor'
 theme: "ananke"
 # see https://gohugo.io/templates/menu-templates/#section-menu-for-lazy-bloggers
 sectionPagesMenu: main
@@ -20,7 +20,7 @@ menu:
 
 params:
   env: production
-  description: "An AI Assistant for Exploratory Programmingßßß"
+  description: "An Agent to troubleshoot Kubernetes"
   enableEmoji: true
   images:
     - cover.png
