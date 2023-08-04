@@ -1,0 +1,52 @@
+[more]
+other = "More"
+
+[allTitle]
+other = "All {{.Title }}"
+
+[recentTitle]
+other = "Recent {{.Title }}"
+
+[readMore]
+other = "read more"
+
+[by]
+other = "By"
+
+[whatsInThis]
+# The original value was What's in this page {{.Type}} and that led
+# to weird titles like "Whats in this Docs" This is used by 
+# menu-contextual.html to render the table of contents.
+other = "What's in this page"
+
+[related]
+other = "Related"
+
+[yourName]
+other = "Your Name"
+
+[emailAddress]
+other = "Email Address"
+
+[message]
+other = "Message"
+
+[emailRequiredNote]
+other = "An email address is required."
+
+[send]
+other = "Send"
+
+[taxonomyPageList]
+other = "Below you will find pages that utilize the taxonomy term “{{ .Title }}”"
+
+[readingTime]
+one = "One minute read"
+other = "{{ .Count }} minutes read"
+
+[wordCount]
+one = "One word"
+other = "{{ .Count }} words"
+
+[pageTitle]
+other = "{{ .Name }} page"
