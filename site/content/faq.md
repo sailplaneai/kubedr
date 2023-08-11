@@ -27,4 +27,3 @@ You can open a GitHub Issue in [jlewi/kubedr](https://github.com/jlewi/kubedr).
 
 You can open a GitHub Issue in [jlewi/kubedr](https://github.com/jlewi/kubedr).
 
-
