@@ -1,0 +1,22 @@
+apiVersion: kubedr.ai/v1alpha1
+kind: RunBook
+metadata:
+  name: iam
+  namespace: gke
+entries:
+  - hypothesis: The service account's IAM roles are missing the desired permissions
+    prediction: The Google Cloud IAM Role ${ROLE} doesn't include permission ${PERMISSION} 
+    experiment: Run `gcloud iam roles describe  roles/${ROLE}` and check whether the desired permission is missing
+  - hypothesis: The kubernetes service account doesn't have the requested permissions because workload identity is not enabled on the cluster
+    prediction: The workload identity pool isn't set on the cluster
+    experiment: Run `gcloud container clusters describe ${CLUSTER_NAME} --location=${REGION} --format="value(workloadIdentityConfig.workloadPool)`
+    references:
+      - https://cloud.google.com/kubernetes-engine/docs/troubleshooting/troubleshooting-security#workload-identity
+  - hypothesis: The Kubernetes service account is missing the annotation binding it to a GCP service account
+    prediction: The service account ${SERVICE_ACCOUNT} in namespace ${NAMESPACE} is missing the annotation "iam.gke.io/gcp-service-account"
+    experiment: Run `kubectl get serviceaccount ${SERVICE_ACCOUNT} -n ${NAMESPACE} -o yaml` and check whether the annotation is missing
+    references:
+      - https://cloud.google.com/kubernetes-engine/docs/troubleshooting/troubleshooting-security#workload-identity
+  - hypothesis: The GCP service account is missing a iam.workloadIdentityUser role binding for the kubernetes service account
+    prediction: The IAM policy for the GCP service account ${GSA} doesn't include the role binding roles/iam.workloadIdentityUser for `serviceAccount:${PROJECT_ID}.svc.id.goog[${NAMESPACE}/${KSA_NAME}]
+    experiment: Get the IAM policy for the GCP service account ${GSA} by running `gcloud iam service-accounts get-iam-policy ${GSA_NAME}@${PROJECT_ID}.iam.gserviceaccount.com`
