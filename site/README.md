@@ -28,4 +28,6 @@ Publishing happens through [this workflow](./github/workflows/gh-pages.yaml).
 
 # References
 
+[Hugo Modules](https://gohugo.io/hugo-modules/)
 [Hugo Quick Start](https://gohugo.io/getting-started/quick-start/)
+[Docsy Migrate to Hugo Modules](https://www.docsy.dev/docs/updating/convert-site-to-module/)

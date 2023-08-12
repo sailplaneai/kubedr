@@ -1,7 +1,9 @@
 baseURL: 'http://kubedr.ai/'
 languageCode: 'en-us'
 title: 'KubeDoctor'
-theme: "docsy"
+theme:
+  - github.com/google/docsy
+  - github.com/google/docsy/dependencies
 # see https://gohugo.io/templates/menu-templates/#section-menu-for-lazy-bloggers
 sectionPagesMenu: main
 menu:
