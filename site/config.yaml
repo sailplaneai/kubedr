@@ -9,9 +9,12 @@ menu:
   - name: Home
     url: /
     weight: 1
+  - name: Documentation
+    url: /docs
+    weight: 2
   - name: Contact
     url: /contact
-    weight: 2
+    weight: 3
   - name: FAQ
     url: /faq
     weight: 4
