@@ -127,3 +127,6 @@ kubedr will run the experiment and then analyze the results and do one of the fo
    * If kubedr has reached a conclusion it will provide the conclusion and exit
    * Generate a new hypothesis, prediction, and experiment to futher diagnose the issue
 
+## Where should I go next?
+
+The [Examples](/docs/examples/) guide contains examples of different problems and how to troubleshoot them with KubeDr.
