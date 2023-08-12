@@ -1,7 +1,7 @@
 baseURL: 'http://kubedr.ai/'
 languageCode: 'en-us'
 title: 'KubeDoctor'
-theme: "ananke"
+theme: "docsy"
 # see https://gohugo.io/templates/menu-templates/#section-menu-for-lazy-bloggers
 sectionPagesMenu: main
 menu:
