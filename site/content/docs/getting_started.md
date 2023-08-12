@@ -3,6 +3,7 @@ title: "Getting Started"
 date: 2023-04-06T09:49:12-07:00
 draft: false
 toc: true
+weight: 3
 ---
 
 Follow the instructions below to get started with KubeDr
