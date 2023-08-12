@@ -17,6 +17,7 @@ toc: true
 {{< /blocks/cover >}}
 
 
+
 {{% blocks/lead color="primary" %}}
 
 KubeDoctor is a lightweight agent that helps troubleshoot issues in your Kubernetes clusters. You install a CLI tool, connect it to your cluster, and then you can ask it to solve issues with your networking, pods, PVs, etc. Behind the scenes, KubeDoctor uses a technique called ["Scientific Debugging,"](https://arxiv.org/abs/2304.02195) which tests multiple hypotheses about a failure by observing the state of your system using kubectl commands and log queries. We help you debug issues inexpensively, using compute instead of human hours.
@@ -27,3 +28,4 @@ Here's a short demo 👇
 
 <div style="position: relative; padding-bottom: 57.324840764331206%; height: 0;"><iframe src="https://www.loom.com/embed/0af9c20dd8494791adbadf4ef5f485b5" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
 
+{{% /blocks/lead %}}
