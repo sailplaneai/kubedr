@@ -1,0 +1,221 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>KubeDoctor – Documentation</title><link>http://kubedr.ai/docs/</link><description>Recent content in Documentation on KubeDoctor</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 02 Mar 2023 15:43:09 -0800</lastBuildDate><atom:link href="http://kubedr.ai/docs/index.xml" rel="self" type="application/rss+xml"/><item><title>Docs: Overview</title><link>http://kubedr.ai/docs/overview/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/overview/</guid><description>
+&lt;p>KubeDr is a CLI that uses AI to troubleshoot and fix Kubernetes and Cloud problems.&lt;/p>
+&lt;p>KubeDr uses a technique called &lt;a href="https://arxiv.org/abs/2304.02195">&amp;ldquo;Scientific Debugging,&amp;rdquo;&lt;/a> to
+generate the following&lt;/p>
+&lt;ul>
+&lt;li>A hypothesis about why a problem is occuring&lt;/li>
+&lt;li>A prediction that can be used to test whether the hypothesis is true&lt;/li>
+&lt;li>An experiment to test the prediction&lt;/li>
+&lt;/ul>
+&lt;p>After generating a hypothesis, prediction, and experiment, KubeDr will ask for permission to run the experiment. Based on the experiment&amp;rsquo;s output
+KubeDr will evaluate the prediction and hypothesis. KubeDr will then use that information
+to either generate new hypotheses, predictions, and experiments or draw a conclusion about the
+source of the problem.&lt;/p>
+&lt;p>KubeDr&amp;rsquo;s prior knowledge about Cloud and Kubernetes can be augmented with runbooks. A
+&lt;a href="https://github.com/jlewi/kubedr/tree/main/runbooks">runbook&lt;/a> is just a YAML file
+containing tuples of (hypothesis, prediction, experiment). KubeDr can automatically
+generate these YAML files from your existing runbooks.&lt;/p>
+&lt;h2 id="why-use-kubedr">Why Use KubeDr?&lt;/h2>
+&lt;p>Infrastructure, platform, and app teams confront the growing complexity of Cloud &amp;amp; Kubernetes on a daily basis.
+This complexity makes it very difficult for a single engineer to fully understand a company&amp;rsquo;s stack and not
+just the layer they work on daily. This problem is particular acute when trying to diagnose a problem
+whose root cause may be in a different part of the stack.&lt;/p>
+&lt;p>KubeDr solves this problem by using AI to synthesis information and generate troubleshooting
+steps that can operate across the stack. KubeDr automates troubleshooting reducing toil
+and time to problem resolution.&lt;/p>
+&lt;h2 id="who-is-kubedr-for">Who is KubeDr for?&lt;/h2>
+&lt;p>&lt;strong>Infrastructure engineers&lt;/strong> who deal with Kubernetes and Cloud on a daily basis. KubeDr can
+help infrastructure engineers quickly debug and fix these issues.&lt;/p>
+&lt;p>&lt;strong>Platform teams&lt;/strong> who want to provide their customers with tools to diagnose and fix problems with the platform.&lt;/p>
+&lt;p>&lt;strong>App teams&lt;/strong> who need help troubleshooting with Cloud/Kubernetes or their internal developer platform.&lt;/p>
+&lt;h2 id="where-should-i-go-next">Where should I go next?&lt;/h2>
+&lt;p>Follow the &lt;a href="http://kubedr.ai/docs/getting_started/">Getting Started&lt;/a> guide to download and use KubeDr.&lt;/p></description></item><item><title>Docs: Getting Started</title><link>http://kubedr.ai/docs/getting_started/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/getting_started/</guid><description>
+&lt;p>Follow the instructions below to get started with KubeDr&lt;/p>
+&lt;h2 id="download-kubedr">Download KubeDr&lt;/h2>
+&lt;ol>
+&lt;li>Download the latest release from the &lt;a href="https://github.com/jlewi/kubedr/releases">releases page&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2 id="download-weaviate">Download Weaviate&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>Download the latest release of &lt;a href="https://weaviate.io/">weaviate&lt;/a> from the &lt;a href="https://github.com/weaviate/weaviate/releases">releases page&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Ensure the weaviate binary is on your path and accessible as &lt;code>weavate&lt;/code>&lt;/p>
+&lt;ul>
+&lt;li>KubeDr runs weaviate locally in order to index and query runbooks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="configure-kubedr">Configure KubeDr&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>If you don&amp;rsquo;t already have an OpenAI API key visit &lt;a href="https://openai.com/">https://openai.com/&lt;/a> to
+obtain one&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Configure kubedr to use your OpenAI API Key&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr config set apiKeyFile=/path/to/your/api.key.file
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>&lt;code>api.key.file&lt;/code> should be a text file containing your OpenAI APIKey&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Create the index for runbooks&lt;/p>
+&lt;p>kubedr index create&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Clone KubeDr&amp;rsquo;s public runbooks&lt;/p>
+&lt;pre tabindex="0">&lt;code>git clone https://github.com/jlewi/kubedr /tmp/kubedr
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>
+&lt;p>Index the runbooks&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr index dir /tmp/kubedr/runbooks
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>
+&lt;p>Verify the runbooks were indexed&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr index list
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>This command should output a table listing all the tuples (hypothesis, prediction, experiment) kubedr has indexed&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>+--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
+| ID | NAME | NAMESPACE | HYPOTHESIS | PREDICTION | EXPERIMENT |
++--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
+| 1569347c-855c-38a6-34bd-d5964b61a4c4 | iam-0 | gke | The service account&amp;#39;s IAM | The Google Cloud IAM Role | Run `gcloud iam roles describe |
+| | | | roles are missing the desired | ${ROLE} doesn&amp;#39;t include | roles/${ROLE}` and check |
+| | | | permissions | permission ${PERMISSION} | whether the desired permission |
+| | | | | | is missing |
+| 1675ddd2-5c30-a8fe-9875-d656c720912b | iam-1 | gke | The kubernetes service account | The workload identity pool | Run `gcloud container clusters describe |
+| | | | doesn&amp;#39;t have the requested | isn&amp;#39;t set on the cluster | ${CLUSTER_NAME} --location=${REGION} |
+| | | | permissions because workload | | --format=&amp;#34;value(workloadIdentityConfig.workloadPool)` |
+| | | | identity is not enabled on the | | |
+...
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;/ol>
+&lt;h2 id="diagnose-a-problem">Diagnose a problem&lt;/h2>
+&lt;p>You can diagnose a problem using the &lt;strong>diagnose&lt;/strong> command&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr diagnose problem ${PROBLEM}
+&lt;/code>&lt;/pre>&lt;p>${PROBLEM} should be a natural language description of the problem you want to diagnose. Here are some examples&lt;/p>
+&lt;ul>
+&lt;li>&amp;ldquo;service account esp-echo in namespace sampleapp can&amp;rsquo;t access GCS buckets&amp;rdquo;&lt;/li>
+&lt;li>&amp;ldquo;network traffic can&amp;rsquo;t reach the service esp-echo in namespace sampleapp&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>It is important to write clear problem descriptions. Here are some tips&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>For a problem dealing with a Kubernetes resource include the following information&lt;/p>
+&lt;ul>
+&lt;li>Type of resource&lt;/li>
+&lt;li>Namespace of resource&lt;/li>
+&lt;li>Name of resource&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>For a problem dealing with a Google Cloud resource include the following information&lt;/p>
+&lt;ul>
+&lt;li>Type of resource&lt;/li>
+&lt;li>Project of resource&lt;/li>
+&lt;li>Zone or region of resource (if applicable)&lt;/li>
+&lt;li>Name of resource&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>kubedr will respond with a hypothesis, prediction, and experiment. kubedr will
+ask for confirmation to run the experiment. Type &lt;code>yes&lt;/code> to run the experiment&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr will
+Use the scientific method to determine if network traffic can access the service named hydros in namespace hydros. Say &amp;#39;Everything looks good&amp;#39; if no problems can be found.
+kubedr is thinking...
+Hypothesis: The Kubernetes Service &amp;#34;hydros&amp;#34; might not be properly set up in the &amp;#34;hydros&amp;#34; namespace, causing network traffic to be unable to access the service.
+Prediction: If the Service &amp;#34;hydros&amp;#34; is correctly configured and functioning correctly, the command &amp;#39;kubectl -n hydros get service hydros&amp;#39; should return information about the service.
+Experiment: Run the following command - &amp;#39;kubectl -n hydros get service hydros&amp;#39; to check if the service exists and is properly set up in the namespace.
+kubedr would like to execute the following command:
+kubectl -n hydros get service hydros
+Do you want to run the command (yes/no)[no]: yes
+&lt;/code>&lt;/pre>&lt;p>kubedr will run the experiment and then analyze the results and do one of the following&lt;/p>
+&lt;ul>
+&lt;li>If kubedr has reached a conclusion it will provide the conclusion and exit&lt;/li>
+&lt;li>Generate a new hypothesis, prediction, and experiment to futher diagnose the issue&lt;/li>
+&lt;/ul>
+&lt;h2 id="where-should-i-go-next">Where should I go next?&lt;/h2>
+&lt;p>The &lt;a href="http://kubedr.ai/docs/examples/">Examples&lt;/a> guide contains examples of different problems and how to troubleshoot them with KubeDr.&lt;/p></description></item><item><title>Docs: Examples</title><link>http://kubedr.ai/docs/examples/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/examples/</guid><description>
+&lt;p>This page provides examples of troubleshooting various problems using KubeDr.&lt;/p>
+&lt;p>You will need access to a Kubernetes cluster in order to deploy the example
+resources. If you don&amp;rsquo;t have a Kubernetes cluster refer to the
+&lt;a href="https://kubernetes.io/docs/setup/">Kubernetes Documentation&lt;/a> to learn about
+the many ways to run Kubernetes.&lt;/p>
+&lt;h2 id="prerequisites">Prerequisites&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>Clone the &lt;a href="https://github.com/jlewi/kubedr">kubedr&lt;/a> repository to obtain
+the Kubernetes manifests&lt;/p>
+&lt;pre tabindex="0">&lt;code>git clone https://github.com/jlewi/kubedr git_kubedr
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>
+&lt;p>If you haven&amp;rsquo;t already indexed the &lt;a href="https://github.com/jlewi/kubedr/tree/main/runbooks">predefined runbooks&lt;/a>
+index them now as the examples depend on them&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr index dir git_kubedr/runbooks
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>Indexing a runbook is an idempotent operation so running the above operation is a null op if you&amp;rsquo;ve already indexed the runbooks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Create the namespace &lt;code>kubedr-examples&lt;/code> as that&amp;rsquo;s used by the examples.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl create namespace kubedr-examples
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;/ol>
+&lt;h2 id="networking-example">Networking Example&lt;/h2>
+&lt;p>Networking is arguably one of the most easily misconfigured things since it often involves multiple layers (e.g. Cloud loadbalancers, service mesh, application configuration).&lt;/p>
+&lt;p>In this example we deploy a simple echo service and then troubleshoot why traffic can&amp;rsquo;t reach it.&lt;/p>
+&lt;p>Deploy the application.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl apply -f ${REPO}/examples/service_labels/manifests.yaml
+&lt;/code>&lt;/pre>&lt;p>Verify that the pods are deployed.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl get pods
+No resources found in autobuilder namespace.
+kubectl -n kubedr-examples get pods
+NAME READY STATUS RESTARTS AGE
+esp-echo-764cfbb49c-k68dq 1/1 Running 0 39s
+&lt;/code>&lt;/pre>&lt;p>Try to port-forward to the service and verify that traffic isn&amp;rsquo;t getting through&lt;/p>
+&lt;p>Setup port-forwarding&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl -n kubedr-examples port-forward service/esp-echo 8080:80
+&lt;/code>&lt;/pre>&lt;p>Now try to send a curl request&lt;/p>
+&lt;pre tabindex="0">&lt;code>curl localhost:8080/hello
+curl: (7) Failed to connect to localhost port 8080 after 3 ms: Connection refused
+&lt;/code>&lt;/pre>&lt;p>Since the request is failing lets use KubeDr to diagnose the problem&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr diagnose problem &amp;#34;Why can&amp;#39;t network traffic reach the service esp-echo in namespace kubedr-examples&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>Every troubleshooting session is different but typically kubedr will run through some combination of the following steps&lt;/p>
+&lt;ul>
+&lt;li>Issuing the command &lt;code>kubectl -n kubedr-examples get svc esp-echo -o yaml&lt;/code> to check the service&lt;/li>
+&lt;li>Checking for matching pods by doing &lt;code>kubectl -n kubedr-examples get pods -l app=echo -o jsonpath=&amp;quot;{.items[*].status.phase}&amp;quot;&lt;/code>&lt;/li>
+&lt;li>Issuing the command &lt;code>kubectl -n kubedr-examples describe svc esp-echo&lt;/code> to check for any pods&lt;/li>
+&lt;li>Issuing the command &lt;code>kubectl -n kubedr-examples get deployment -l app=echo -o yaml&lt;/code> to check for deployments matching the selector&lt;/li>
+&lt;/ul>
+&lt;p>A typical conclusion might look like the following&lt;/p>
+&lt;pre tabindex="0">&lt;code>The problem is that there is no Deployment available for the &amp;#39;esp-echo&amp;#39; service in the &amp;#39;kubedr-examples&amp;#39; namespace. Consequently, no pods are running that could handle the network traffic directed to the &amp;#39;esp-echo&amp;#39; service. You would need to create a Deployment that correctly selects the &amp;#39;esp-echo&amp;#39; service based on labels and ensures that the necessary pods are running.
+&lt;/code>&lt;/pre>&lt;p>In this case KubeDr correctly determines that the problem is that there are no deployments available because the service&amp;rsquo;s selector and deployment&amp;rsquo;s labels don&amp;rsquo;t match.&lt;/p>
+&lt;h2 id="workload-identity-example">Workload Identity Example&lt;/h2>
+&lt;p>Create the service account.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl apply -f examples/workload_identity.yaml
+&lt;/code>&lt;/pre>&lt;p>Now we can use KubeDr to diagnose problems with workload identity.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr diagnose problem &amp;#34;why can&amp;#39;t service account esp-echo in namespace kubedr-examples access GCS buckets&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>kubedr will typically do the following&lt;/p>
+&lt;ul>
+&lt;li>Fetch the service account to check for the workload identity annotation &lt;code>iam.gke.io/gcp-service-account&lt;/code>&lt;/li>
+&lt;li>Get the desired GCP service account from the &lt;code>iam.gke.io/gcp-service-account&lt;/code>&lt;/li>
+&lt;li>Try to fetch the IAM service account&lt;/li>
+&lt;/ul>
+&lt;p>Based on this, kubedr will conclude that the service account is missing and possibly suggest a command to fix it by creating the service account.&lt;/p>
+&lt;p>To further explore using Kubedr you can try creating the service account and fixing this problem. This will only work if you have permission to
+create service accounts.&lt;/p>
+&lt;pre tabindex="0">&lt;code>gcloud iam service-accounts create kubedr-example --description=&amp;#34;Service Account for KubeDr examples&amp;#34; --display-name=&amp;#34;kubedr-example&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>Update the service account to use the newly created service account&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubect -n kubedr-examples edit serviceaccount esp-echo
+&lt;/code>&lt;/pre>&lt;p>Set the value of the annotation &lt;code>iam.gke.io/gcp-service-account&lt;/code> to &lt;code>kubedr-example@${PROJECT}.iam.gserviceaccount.com&lt;/code>. Be sure to
+substitute in the name of your project for $PROJECT.&lt;/p>
+&lt;p>Now rerun kubedr&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr diagnose problem &amp;#34;why can&amp;#39;t service account esp-echo in namespace kubedr-examples access GCS buckets&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>kubedr should correctly determine that the GCP service account exists but is missing the correct rolebinding to
+allow the Kubernetes service account to assume its identity.&lt;/p>
+&lt;h2 id="cleanup">Cleanup&lt;/h2>
+&lt;p>After you are done trying out KubeDr its a good idea to delete the namespace to cleanup any examples you created.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl delete namespace
+&lt;/code>&lt;/pre></description></item></channel></rss>
