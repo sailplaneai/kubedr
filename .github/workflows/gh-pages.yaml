@@ -26,24 +26,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          # N.B. I copied this from https://github.com/peaceiris/actions-hugo#%EF%B8%8F-workflow-for-autoprefixer-and-postcss-cli
-          # But caching was failing for me with
-          # /opt/hostedtoolcache/node/18.17.0/x64/bin/npm config get cache
-          # /home/runner/.npm
-          # Error: Some specified paths were not resolved, unable to cache dependencies.
-          cache: 'npm'          
-          # The action defaults to search for the dependency file (package-lock.json,
-          # npm-shrinkwrap.json or yarn.lock) in the repository root, and uses its
-          # hash as a part of the cache key.
-          # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
+          node-version: '18'          
+          cache: 'npm'                    
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
-        working-directory: site
-      # - run: npm install
-      #   working-directory: site
-      # - run: npm install postcss-cli
-      #   working-directory: site
+        working-directory: site      
       - name: Build
         run: hugo --minify
         working-directory: site
