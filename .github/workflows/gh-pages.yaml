@@ -42,6 +42,8 @@ jobs:
       #  working-directory: site
       # - run: npm install
       #   working-directory: site
+      - run: npm install postcss-cli
+        working-directory: site
       - name: Build
         run: hugo --minify
         working-directory: site
