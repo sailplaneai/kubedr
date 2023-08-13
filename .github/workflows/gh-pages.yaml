@@ -39,8 +39,8 @@ jobs:
           # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
           #cache-dependency-path: '**/package-lock.json'
 
-      - run: npm ci
-        working-directory: site
+      #- run: npm ci
+      #  working-directory: site
       - name: Build
         run: hugo --minify
         working-directory: site
