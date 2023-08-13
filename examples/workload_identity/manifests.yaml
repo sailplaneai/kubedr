@@ -1,0 +1,10 @@
+# A service account for testing workload identity
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    iam.gke.io/gcp-service-account: esp-echo@kubedr.iam.gserviceaccount.com
+  labels:
+    app: esp-echo
+  name: esp-echo
+  namespace: kubedr-examples

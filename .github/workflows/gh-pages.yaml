@@ -1,3 +1,5 @@
+# Docsy theme requires postcss-cli to build the CSS
+# https://github.com/peaceiris/actions-hugo#%EF%B8%8F-workflow-for-autoprefixer-and-postcss-cli
 name: github pages
 
 on:
@@ -20,8 +22,15 @@ jobs:
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
-          # extended: true
-
+          extended: true          
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'          
+          cache: 'npm'                    
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+        working-directory: site      
       - name: Build
         run: hugo --minify
         working-directory: site

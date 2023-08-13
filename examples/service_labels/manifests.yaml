@@ -1,0 +1,46 @@
+# Sample application
+# Based on https://github.com/GoogleCloudPlatform/golang-samples/blob/main/endpoints/getting-started/deployment.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: esp-echo
+  namespace: kubedr-examples
+spec:
+  ports:
+  - port: 80
+    targetPort: 8081
+    protocol: TCP
+    name: http
+  selector:
+    app: echo
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: esp-echo
+  namespace: kubedr-examples
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esp-echo
+  template:
+    metadata:
+      labels:
+        app: esp-echo
+    spec:
+      containers:
+      - name: echo
+        image: gcr.io/google-samples/echo-go:1.0
+        ports:
+          - containerPort: 8080
+        resources:
+          limits:
+            cpu: 250m
+            ephemeral-storage: 1Gi
+            memory: .5Gi
+          requests:
+            cpu: 250m
+            ephemeral-storage: 1Gi
+            memory: .5Gi
