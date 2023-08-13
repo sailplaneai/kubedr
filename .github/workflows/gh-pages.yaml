@@ -37,7 +37,7 @@ jobs:
           # npm-shrinkwrap.json or yarn.lock) in the repository root, and uses its
           # hash as a part of the cache key.
           # https://github.com/actions/setup-node/blob/main/docs/advanced-usage.md#caching-packages-data
-          #cache-dependency-path: '**/package-lock.json'          
+          cache-dependency-path: 'site/package-lock.json'
       - run: npm ci
         working-directory: site
       - name: Build
