@@ -60,37 +60,6 @@ obtain one&lt;/p>
 &lt;li>&lt;code>api.key.file&lt;/code> should be a text file containing your OpenAI APIKey&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;li>
-&lt;p>Create the index for runbooks&lt;/p>
-&lt;p>kubedr index create&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>Clone KubeDr&amp;rsquo;s public runbooks&lt;/p>
-&lt;pre tabindex="0">&lt;code>git clone https://github.com/jlewi/kubedr /tmp/kubedr
-&lt;/code>&lt;/pre>&lt;/li>
-&lt;li>
-&lt;p>Index the runbooks&lt;/p>
-&lt;pre tabindex="0">&lt;code>kubedr index dir /tmp/kubedr/runbooks
-&lt;/code>&lt;/pre>&lt;/li>
-&lt;li>
-&lt;p>Verify the runbooks were indexed&lt;/p>
-&lt;pre tabindex="0">&lt;code>kubedr index list
-&lt;/code>&lt;/pre>&lt;ul>
-&lt;li>This command should output a table listing all the tuples (hypothesis, prediction, experiment) kubedr has indexed&lt;/li>
-&lt;/ul>
-&lt;pre tabindex="0">&lt;code>+--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
-| ID | NAME | NAMESPACE | HYPOTHESIS | PREDICTION | EXPERIMENT |
-+--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
-| 1569347c-855c-38a6-34bd-d5964b61a4c4 | iam-0 | gke | The service account&amp;#39;s IAM | The Google Cloud IAM Role | Run `gcloud iam roles describe |
-| | | | roles are missing the desired | ${ROLE} doesn&amp;#39;t include | roles/${ROLE}` and check |
-| | | | permissions | permission ${PERMISSION} | whether the desired permission |
-| | | | | | is missing |
-| 1675ddd2-5c30-a8fe-9875-d656c720912b | iam-1 | gke | The kubernetes service account | The workload identity pool | Run `gcloud container clusters describe |
-| | | | doesn&amp;#39;t have the requested | isn&amp;#39;t set on the cluster | ${CLUSTER_NAME} --location=${REGION} |
-| | | | permissions because workload | | --format=&amp;#34;value(workloadIdentityConfig.workloadPool)` |
-| | | | identity is not enabled on the | | |
-...
-&lt;/code>&lt;/pre>&lt;/li>
 &lt;/ol>
 &lt;h2 id="diagnose-a-problem">Diagnose a problem&lt;/h2>
 &lt;p>You can diagnose a problem using the &lt;strong>diagnose&lt;/strong> command&lt;/p>
@@ -137,7 +106,10 @@ Do you want to run the command (yes/no)[no]: yes
 &lt;li>Generate a new hypothesis, prediction, and experiment to futher diagnose the issue&lt;/li>
 &lt;/ul>
 &lt;h2 id="where-should-i-go-next">Where should I go next?&lt;/h2>
-&lt;p>The &lt;a href="http://kubedr.ai/docs/examples/">Examples&lt;/a> guide contains examples of different problems and how to troubleshoot them with KubeDr.&lt;/p></description></item><item><title>Docs: Examples</title><link>http://kubedr.ai/docs/examples/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/examples/</guid><description>
+&lt;ul>
+&lt;li>The &lt;a href="http://kubedr.ai/docs/examples/">Examples&lt;/a> guide contains examples of different problems and how to troubleshoot them with KubeDr.&lt;/li>
+&lt;li>Learn more about &lt;a href="http://kubedr.ai/docs/runbooks/">Runbooks&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Docs: Examples</title><link>http://kubedr.ai/docs/examples/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/examples/</guid><description>
 &lt;p>This page provides examples of troubleshooting various problems using KubeDr.&lt;/p>
 &lt;p>You will need access to a Kubernetes cluster in order to deploy the example
 resources. If you don&amp;rsquo;t have a Kubernetes cluster refer to the
@@ -218,4 +190,58 @@ allow the Kubernetes service account to assume its identity.&lt;/p>
 &lt;h2 id="cleanup">Cleanup&lt;/h2>
 &lt;p>After you are done trying out KubeDr its a good idea to delete the namespace to cleanup any examples you created.&lt;/p>
 &lt;pre tabindex="0">&lt;code>kubectl delete namespace
-&lt;/code>&lt;/pre></description></item></channel></rss>
+&lt;/code>&lt;/pre></description></item><item><title>Docs: Runbooks</title><link>http://kubedr.ai/docs/runbooks/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/runbooks/</guid><description>
+&lt;p>This page describes how to create and index runbooks. Runbooks allow you to customize the agent
+for your infrastructure.&lt;/p>
+&lt;h2 id="what-is-a-runbook">What is a Runbook&lt;/h2>
+&lt;p>A runbook is a YAML file providing tuples of (hypothesis, prediction, experiment) which can
+be used to troubleshoot various problems. An example is shown below&lt;/p>
+&lt;pre tabindex="0">&lt;code>apiVersion: kubedr.ai/v1alpha1
+kind: RunBook
+metadata:
+name: iam
+namespace: gke
+entries:
+- hypothesis: The service account&amp;#39;s IAM roles are missing the desired permissions
+prediction: The Google Cloud IAM Role ${ROLE} doesn&amp;#39;t include permission ${PERMISSION}
+experiment: Run `gcloud iam roles describe roles/${ROLE}` and check whether the desired permission is missing
+- hypothesis: The kubernetes service account doesn&amp;#39;t have the requested permissions because workload identity is not enabled on the cluster
+prediction: The workload identity pool isn&amp;#39;t set on the cluster
+experiment: Run `gcloud container clusters describe ${CLUSTER_NAME} --location=${REGION} --format=&amp;#34;value(workloadIdentityConfig.workloadPool)`
+references:
+- https://cloud.google.com/kubernetes-engine/docs/troubleshooting/troubleshooting-security#workload-identity
+&lt;/code>&lt;/pre>&lt;p>More examples of runbooks can be found in the &lt;a href="https://github.com/jlewi/kubedr/tree/main/runbooks">kubedr repository&lt;/a>.&lt;/p>
+&lt;p>The YAML file is intended to be an intermediary format into which your runbooks and documentation can be converted so
+as to be understood by Kube Doctore.&lt;/p>
+&lt;p>In the future Kube Doctor will help you automatically generate these YAML files from your existing runbooks and documentation.
+For now you have to manually author them.&lt;/p>
+&lt;h2 id="index-the-runbooks">Index the runbooks&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>To index a directory containing one or more run the &lt;code>index dir&lt;/code> command.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr index dir ${DIRECTORY}
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>This will recourse over the directory and process any YAML files containing Runbooks&lt;/li>
+&lt;li>Indexing a runbook is an idempotent operation so running the above operation is a null op if you&amp;rsquo;ve already indexed the runbooks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Verify the runbooks were indexed&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr index list
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>This command should output a table listing all the tuples (hypothesis, prediction, experiment) kubedr has indexed&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>+--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
+| ID | NAME | NAMESPACE | HYPOTHESIS | PREDICTION | EXPERIMENT |
++--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
+| 1569347c-855c-38a6-34bd-d5964b61a4c4 | iam-0 | gke | The service account&amp;#39;s IAM | The Google Cloud IAM Role | Run `gcloud iam roles describe |
+| | | | roles are missing the desired | ${ROLE} doesn&amp;#39;t include | roles/${ROLE}` and check |
+| | | | permissions | permission ${PERMISSION} | whether the desired permission |
+| | | | | | is missing |
+| 1675ddd2-5c30-a8fe-9875-d656c720912b | iam-1 | gke | The kubernetes service account | The workload identity pool | Run `gcloud container clusters describe |
+| | | | doesn&amp;#39;t have the requested | isn&amp;#39;t set on the cluster | ${CLUSTER_NAME} --location=${REGION} |
+| | | | permissions because workload | | --format=&amp;#34;value(workloadIdentityConfig.workloadPool)` |
+| | | | identity is not enabled on the | | |
+...
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;/ol></description></item></channel></rss>
