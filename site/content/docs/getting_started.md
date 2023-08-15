@@ -35,45 +35,7 @@ Follow the instructions below to get started with KubeDr
 
    * `api.key.file` should be a text file containing your OpenAI APIKey 
 
-1. Create the index for runbooks
-   
-   kubedr index create
 
-1. Clone KubeDr's public runbooks
-
-   ```
-   git clone https://github.com/jlewi/kubedr /tmp/kubedr
-   ```
-
-1. Index the runbooks
-
-   ```
-   kubedr index dir /tmp/kubedr/runbooks
-   ```
-
-1. Verify the runbooks were indexed
-
-   ```
-   kubedr index list
-   ```
-
-   * This command should output a table listing all the tuples (hypothesis, prediction, experiment) kubedr has indexed
-
-   ```
-   +--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
-   |                  ID                  |     NAME     | NAMESPACE  |           HYPOTHESIS           |                             PREDICTION                              |                      EXPERIMENT                       |
-   +--------------------------------------+--------------+------------+--------------------------------+---------------------------------------------------------------------+-------------------------------------------------------+
-   | 1569347c-855c-38a6-34bd-d5964b61a4c4 | iam-0        | gke        | The service account's IAM      | The Google Cloud IAM Role                                           | Run `gcloud iam roles describe                        |
-   |                                      |              |            | roles are missing the desired  | ${ROLE} doesn't include                                             |  roles/${ROLE}` and check                             |
-   |                                      |              |            | permissions                    | permission ${PERMISSION}                                            | whether the desired permission                        |
-   |                                      |              |            |                                |                                                                     | is missing                                            |
-   | 1675ddd2-5c30-a8fe-9875-d656c720912b | iam-1        | gke        | The kubernetes service account | The workload identity pool                                          | Run `gcloud container clusters describe               |
-   |                                      |              |            | doesn't have the requested     | isn't set on the cluster                                            | ${CLUSTER_NAME} --location=${REGION}                  |
-   |                                      |              |            | permissions because workload   |                                                                     | --format="value(workloadIdentityConfig.workloadPool)` |
-   |                                      |              |            | identity is not enabled on the |                                                                     |                                                       |
-
-   ...
-   ```
 ## Diagnose a problem
 
 You can diagnose a problem using the **diagnose** command 
@@ -130,4 +92,5 @@ kubedr will run the experiment and then analyze the results and do one of the fo
 
 ## Where should I go next?
 
-The [Examples](/docs/examples/) guide contains examples of different problems and how to troubleshoot them with KubeDr.
+* The [Examples](/docs/examples/) guide contains examples of different problems and how to troubleshoot them with KubeDr.
+* Learn more about [Runbooks](/docs/runbooks/)
