@@ -244,4 +244,74 @@ For now you have to manually author them.&lt;/p>
 | | | | identity is not enabled on the | | |
 ...
 &lt;/code>&lt;/pre>&lt;/li>
-&lt;/ol></description></item></channel></rss>
+&lt;/ol></description></item><item><title>Docs: AI Safety</title><link>http://kubedr.ai/docs/safety/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/safety/</guid><description>
+&lt;p>KubeDR has two different mechanisms to ensure it uses tools safely and doesn&amp;rsquo;t perform destructive actions.&lt;/p>
+&lt;ul>
+&lt;li>Human approval of actions&lt;/li>
+&lt;li>IAM and RBAC&lt;/li>
+&lt;/ul>
+&lt;p>By default KubeDR relies on human review of all actions. While this is safe, it creates a burden
+on the human operator. Furthermore, by preventing KubeDR from operating autonomously we limit KubeDR
+to operating at the speed of the human operator.&lt;/p>
+&lt;p>The second approach is to rely on IAM and RBAC to restrict the actions KubeDR can take. Relying
+on IAM and RBAC makes it easy to reason about the potential impact of KubeDR actions. If KubeDR
+is sufficiently restricted you may deem KubeDR sufficiently safe to operate autonomously.&lt;/p>
+&lt;p>This document explains how to restrict KubeDR using IAM and RBAC for various tools.&lt;/p>
+&lt;h2 id="kubectl">kubectl&lt;/h2>
+&lt;p>To restrict KubeDR&amp;rsquo;s Kubernetes privileges we rely on &lt;a href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">RBAC&lt;/a>.
+We create a &lt;a href="manifests/kubedr_rbac.yaml">service account&lt;/a> to be used to execute &lt;code>kubectl&lt;/code>. This service account is then bound to a
+&lt;a href="manifests/kubedr_rbac.yaml">ClusterRole&lt;/a> to grant KubeDR permissions sufficient for troubleshooting.&lt;/p>
+&lt;p>Follow the steps below to restrict KubeDR&amp;rsquo;s privileges when running kubectl.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Create a copy of &lt;a href="manifests.kubedr_rbac.yaml">kubedr_rbac.yaml&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Edit the &lt;strong>kubedr-readonly&lt;/strong> ClusterRole as desired&lt;/p>
+&lt;ul>
+&lt;li>This role is designed to give KubeDR readonly access to Kubernetes so that it can troubleshoot problems but not make changes&lt;/li>
+&lt;li>You may want to remove the ability to read secrets if you rely on secrets and are worried about exfiltration of secrets&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>(Optionally) replace the &lt;strong>ClusterRoleBinding&lt;/strong> with one or more &lt;strong>RoleBindings&lt;/strong> if you only want KubeDR to have access to certain namespaces.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Apply the manifests&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl apply -f kubedr_rbac.yaml
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>
+&lt;p>Edit your &lt;code>${HOME}/.kubedr/config.yaml&lt;/code> to include a kubectl section like the one below&lt;/p>
+&lt;pre tabindex="0">&lt;code>...
+tools:
+kubectl:
+serviceAccount:
+name: kubedr
+namespace: kubedr
+autoRun: false
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>If you changed the name or namespace of the serviceAccount be sure to set it correctly in your account&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Run KubeDR as you normally would&lt;/p>
+&lt;ul>
+&lt;li>KubeDR will use the &lt;a href="https://kubernetes.io/docs/reference/kubernetes-api/authentication-resources/token-request-v1/">TokenRequest API&lt;/a> to obtain a token for the service account and then use it to run &lt;code>kubectl&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>If you want to run without human confirmation you can set &lt;strong>autoRun&lt;/strong> to true in &lt;code>${HOME}/.kubedr/config.yaml&lt;/code>&lt;/p>
+&lt;pre tabindex="0">&lt;code>...
+tools:
+kubectl:
+serviceAccount:
+name: kubedr
+namespace: kubedr
+autoRun: true
+&lt;/code>&lt;/pre>&lt;/li>
+&lt;/ol>
+&lt;h2 id="references">References&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://simonwillison.net/2023/Apr/14/worst-that-can-happen/">Blog on AI Safety By Simon Willson&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://simonwillison.net/2023/Apr/14/worst-that-can-happen/">Prompt injection: What&amp;rsquo;s the worst that can happen?&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>
