@@ -1,0 +1,16 @@
+apiVersion: kubedr.ai/v1alpha1
+kind: GoalBook
+metadata:
+  name: kubectl
+  namespace: kubectl
+entries:
+- thought: In order to get information about the kubernetes context we need to know the current-context
+  goal: Get the current-context by running `kubectl config current-context` this will return the name of the current context
+  action: Run `kubectl config current-context`
+- thought: To get the current kubernetes cluster we can run `kubectl config get-contexts` and parse the line with the current context. The current selected context will be marked with a `*`
+  goal: Get the current kubernetes cluster by running `kubectl config view get-contexts` and extract the cluster column.
+  action: Run `kubectl config get-contexts`
+- thought: For GKE clusters, the cluster name follows the pattern gke_${PROJECT}_${REGION}_${CLUSTER_NAME}
+  goal: Extract the GKE cluster project, region, and cluster name
+  # TODO(jeremy)
+  action: strings.split("gke_${PROJECT}_${REGION}_${CLUSTER_NAME}", "_")

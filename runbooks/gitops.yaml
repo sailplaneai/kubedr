@@ -1,0 +1,12 @@
+apiVersion: kubedr.ai/v1alpha1
+kind: GoalBook
+metadata:
+  name: gitops
+  namespace: gitops
+entries:
+- thought: To determine if a resource is deployed via flux you need to check the resource for the annotations kustomize.toolkit.fluxcd.io/name and ​​kustomize.toolkit.fluxcd.io/namespace 
+  goal: Get the annotations for the resource ${RESOURCE} named ${NAME}  in namespace ${NAMESPACE}
+  action: Run kubectl get ${RESOURCE} -n ${NAMESPACE}  ${NAME}
+- thought: to know whether a resource deployed via gitops/flux is up to date we need to know the latest git commit on a repository
+  goal: Get the latest git commit on a repository
+  action: Run git ls-remote ${REPO_URL} ${BRANCH}

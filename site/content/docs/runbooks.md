@@ -34,7 +34,7 @@ entries:
 More examples of runbooks can be found in the [kubedr repository](https://github.com/jlewi/kubedr/tree/main/runbooks).
 
 The YAML file is intended to be an intermediary format into which your runbooks and documentation can be converted so
-as to be understood by Kube Doctore.
+as to be understood by Kube Doctor.
 
 In the future Kube Doctor will help you automatically generate these YAML files from your existing runbooks and documentation.
 For now you have to manually author them.
@@ -54,7 +54,7 @@ For now you have to manually author them.
 1. Verify the runbooks were indexed
 
    ```
-   kubedr index list
+   kubedr index list <runbooks | goalbooks>
    ```
 
    * This command should output a table listing all the tuples (hypothesis, prediction, experiment) kubedr has indexed
