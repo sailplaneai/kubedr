@@ -212,7 +212,7 @@ references:
 - https://cloud.google.com/kubernetes-engine/docs/troubleshooting/troubleshooting-security#workload-identity
 &lt;/code>&lt;/pre>&lt;p>More examples of runbooks can be found in the &lt;a href="https://github.com/jlewi/kubedr/tree/main/runbooks">kubedr repository&lt;/a>.&lt;/p>
 &lt;p>The YAML file is intended to be an intermediary format into which your runbooks and documentation can be converted so
-as to be understood by Kube Doctore.&lt;/p>
+as to be understood by Kube Doctor.&lt;/p>
 &lt;p>In the future Kube Doctor will help you automatically generate these YAML files from your existing runbooks and documentation.
 For now you have to manually author them.&lt;/p>
 &lt;h2 id="index-the-runbooks">Index the runbooks&lt;/h2>
@@ -227,7 +227,7 @@ For now you have to manually author them.&lt;/p>
 &lt;/li>
 &lt;li>
 &lt;p>Verify the runbooks were indexed&lt;/p>
-&lt;pre tabindex="0">&lt;code>kubedr index list
+&lt;pre tabindex="0">&lt;code>kubedr index list &amp;lt;runbooks | goalbooks&amp;gt;
 &lt;/code>&lt;/pre>&lt;ul>
 &lt;li>This command should output a table listing all the tuples (hypothesis, prediction, experiment) kubedr has indexed&lt;/li>
 &lt;/ul>
@@ -314,4 +314,35 @@ autoRun: true
 &lt;ul>
 &lt;li>&lt;a href="https://simonwillison.net/2023/Apr/14/worst-that-can-happen/">Blog on AI Safety By Simon Willson&lt;/a>&lt;/li>
 &lt;li>&lt;a href="https://simonwillison.net/2023/Apr/14/worst-that-can-happen/">Prompt injection: What&amp;rsquo;s the worst that can happen?&lt;/a>&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&lt;/ul></description></item><item><title>Docs: Assistant</title><link>http://kubedr.ai/docs/assist/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/assist/</guid><description>
+&lt;p>This page describes how to use KubeDR to assist you with various tasks.&lt;/p>
+&lt;h2 id="ask-kubedr-for-assistance">Ask KubeDR for assistance&lt;/h2>
+&lt;p>To ask KubeDR for assistance with a task you use the assist sub-command&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr assist &amp;lt;task or question&amp;gt;
+&lt;/code>&lt;/pre>&lt;p>For example, if you are using &lt;a href="https://fluxcd.io/">flux&lt;/a> for GitOps we might use
+kubedr to determine the latest release has been successfully applied.&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl assist &amp;#34;Are flux applied resources up to date in namespace sampleapp?&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>Or we might ask for help with kubectl&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubectl assist &amp;#34;What GKE cluster is the Kubernetes config using?&amp;#34;
+&lt;/code>&lt;/pre>&lt;h2 id="goalbooks">GoalBooks&lt;/h2>
+&lt;p>KubeDR can be tought how to perform various actions using GoalBooks.
+GoalBooks are very similar to &lt;a href="http://kubedr.ai/docs/runbooks">runbooks&lt;/a>. A GoalBook is a
+YAML file providing tuples of (thought, goal, action) which can
+be used to accomplish various actions.&lt;/p>
+&lt;pre tabindex="0">&lt;code>apiVersion: kubedr.ai/v1alpha1
+kind: GoalBook
+metadata:
+name: kubectl
+namespace: kubectl
+entries:
+- thought: In order to get information about the kubernetes context we need to know the current-context
+goal: Get the current-context by running `kubectl config current-context` this will return the name of the current context
+action: Run `kubectl config current-context`
+- thought: To get the current kubernetes cluster we can run `kubectl config get-contexts` and parse the line with the current context. The current selected context will be marked with a `*`
+goal: Get the current kubernetes cluster by running `kubectl config view get-contexts` and extract the cluster column.
+action: Run `kubectl config get-contexts`
+&lt;/code>&lt;/pre>&lt;p>More examples of GoalBooks can be found in the &lt;a href="https://github.com/jlewi/kubedr/tree/main/runbooks">kubedr repository&lt;/a>.&lt;/p>
+&lt;p>The YAML file is intended to be an intermediary format into which your runbooks and documentation can be converted so
+as to be understood by Kube Doctor.&lt;/p>
+&lt;p>In the future Kube Doctor will help you automatically generate these YAML files from your existing runbooks and documentation.
+For now you have to manually author them.&lt;/p></description></item></channel></rss>
