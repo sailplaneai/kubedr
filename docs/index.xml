@@ -345,4 +345,43 @@ action: Run `kubectl config get-contexts`
 &lt;p>The YAML file is intended to be an intermediary format into which your runbooks and documentation can be converted so
 as to be understood by Kube Doctor.&lt;/p>
 &lt;p>In the future Kube Doctor will help you automatically generate these YAML files from your existing runbooks and documentation.
-For now you have to manually author them.&lt;/p></description></item></channel></rss>
+For now you have to manually author them.&lt;/p></description></item><item><title>Docs: Logging</title><link>http://kubedr.ai/docs/logging/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/logging/</guid><description>
+&lt;p>This page describes how to customize KubeDR&amp;rsquo;s logging.&lt;/p>
+&lt;h2 id="filesystem">Filesystem&lt;/h2>
+&lt;p>By default KubeDR creates a new timestampped file containing the logs each time it is invoked.
+You can configure the directory where these files are stored by setting &lt;code>logging.logDir&lt;/code>
+in &lt;code>${HOME}/.kubedr/config.yaml&lt;/code> e.g.&lt;/p>
+&lt;pre tabindex="0">&lt;code>logging:
+logDir: /path/to/log/directory
+&lt;/code>&lt;/pre>&lt;h2 id="google-cloud-logging">Google Cloud Logging&lt;/h2>
+&lt;p>If you have a GCP account you can configure KubeDR to write logs to
+&lt;a href="https://cloud.google.com/logging">Google Cloud Logging&lt;/a>&lt;/p>
+&lt;h3 id="enabling-cloud-logging">Enabling Cloud Logging&lt;/h3>
+&lt;p>To enable Cloud Logging edit your &lt;code>${HOME}/.kubedr/config.yaml&lt;/code>
+to set &lt;code>project&lt;/code> to the GCP project you want to log to. e.g.&lt;/p>
+&lt;pre tabindex="0">&lt;code>logging:
+gcp:
+project: &amp;lt;YOUR PROJECT&amp;gt;
+&lt;/code>&lt;/pre>&lt;p>You must have the role &lt;a href="https://cloud.google.com/iam/docs/understanding-roles#logging-roles">roles/logging.logWriter&lt;/a>
+in order to write logs to the project.&lt;/p>
+&lt;p>Ensure you are logged into the proper account by running&lt;/p>
+&lt;pre tabindex="0">&lt;code>gcloud auth list
+&lt;/code>&lt;/pre>&lt;h3 id="accessing-cloud-logs">Accessing Cloud Logs&lt;/h3>
+&lt;p>Once you have enabled Cloud Logging all KubeDR logs will be streamed
+to Cloud Logging. Each run is tagged with a unique TraceID which is
+stored in the labels of each log entry. This can be used to fetch
+the logs for a particular run using a query like the following.&lt;/p>
+&lt;pre tabindex="0">&lt;code>labels.source=&amp;#34;kubedr&amp;#34;
+labels.traceid=&amp;#34;9e0010be-49e5-11ee-96c4-6ea4a1656548&amp;#34;
+resource.labels.project_id=&amp;#34;chat-acme&amp;#34;
+&lt;/code>&lt;/pre>&lt;p>Be sure to set the correct values of &lt;code>traceid&lt;/code> and &lt;code>project_id&lt;/code>.&lt;/p>
+&lt;p>KubeDR will print out the link for the logs at the start of its run
+for easy access.&lt;/p>
+&lt;h4 id="console-messages">Console Messages&lt;/h4>
+&lt;p>In order to filter the logs to what was shown to the user
+you can add &lt;code>jsonPayload.console=&amp;quot;true&amp;quot;&lt;/code> to your query e.g.&lt;/p>
+&lt;pre tabindex="0">&lt;code>labels.source=&amp;#34;kubedr&amp;#34;
+labels.traceid=&amp;#34;9e0010be-49e5-11ee-96c4-6ea4a1656548&amp;#34;
+resource.labels.project_id=&amp;#34;chat-acme&amp;#34;
+jsonPayload.console=&amp;#34;true&amp;#34;
+&lt;/code>&lt;/pre></description></item></channel></rss>
