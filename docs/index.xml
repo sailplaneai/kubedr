@@ -364,8 +364,9 @@ gcp:
 project: &amp;lt;YOUR PROJECT&amp;gt;
 &lt;/code>&lt;/pre>&lt;p>You must have the role &lt;a href="https://cloud.google.com/iam/docs/understanding-roles#logging-roles">roles/logging.logWriter&lt;/a>
 in order to write logs to the project.&lt;/p>
-&lt;p>Ensure you are logged into the proper account by running&lt;/p>
-&lt;pre tabindex="0">&lt;code>gcloud auth list
+&lt;p>KubeDR uses &lt;a href="https://cloud.google.com/docs/authentication/application-default-credentials">application default credentials(ADC)&lt;/a> to access Google Cloud Logging.
+You must set ADC by running the command below&lt;/p>
+&lt;pre tabindex="0">&lt;code>gcloud auth application-default login
 &lt;/code>&lt;/pre>&lt;h3 id="accessing-cloud-logs">Accessing Cloud Logs&lt;/h3>
 &lt;p>Once you have enabled Cloud Logging all KubeDR logs will be streamed
 to Cloud Logging. Each run is tagged with a unique TraceID which is
