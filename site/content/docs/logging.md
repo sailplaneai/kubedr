@@ -38,10 +38,11 @@ logging:
 You must have the role [roles/logging.logWriter](https://cloud.google.com/iam/docs/understanding-roles#logging-roles)
 in order to write logs to the project.
 
-Ensure you are logged into the proper account by running 
+KubeDR uses [application default credentials(ADC)](https://cloud.google.com/docs/authentication/application-default-credentials) to access Google Cloud Logging. 
+You must set ADC by running the command below
 
 ```
-gcloud auth list
+gcloud auth application-default login
 ```
 
 ### Accessing Cloud Logs
