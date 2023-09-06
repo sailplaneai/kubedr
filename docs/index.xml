@@ -345,7 +345,12 @@ action: Run `kubectl config get-contexts`
 &lt;p>The YAML file is intended to be an intermediary format into which your runbooks and documentation can be converted so
 as to be understood by Kube Doctor.&lt;/p>
 &lt;p>In the future Kube Doctor will help you automatically generate these YAML files from your existing runbooks and documentation.
-For now you have to manually author them.&lt;/p></description></item><item><title>Docs: Logging</title><link>http://kubedr.ai/docs/logging/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/logging/</guid><description>
+For now you have to manually author them.&lt;/p></description></item><item><title>Docs: Configuration</title><link>http://kubedr.ai/docs/configuration/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/configuration/</guid><description>
+&lt;h2 id="weaviate">Weaviate&lt;/h2>
+&lt;p>By default KubeDR will launch a subprocess to run weaviate. However, if you want to run
+Weaviate manually you can configure KubeDR by setting the url of your weaviate instance&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr config set dbConfig.url=&amp;#34;http://WEAVIATE_HOST:PORT&amp;#34;
+&lt;/code>&lt;/pre></description></item><item><title>Docs: Logging</title><link>http://kubedr.ai/docs/logging/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/logging/</guid><description>
 &lt;p>This page describes how to customize KubeDR&amp;rsquo;s logging.&lt;/p>
 &lt;h2 id="filesystem">Filesystem&lt;/h2>
 &lt;p>By default KubeDR creates a new timestampped file containing the logs each time it is invoked.
@@ -385,4 +390,34 @@ you can add &lt;code>jsonPayload.console=&amp;quot;true&amp;quot;&lt;/code> to y
 labels.traceid=&amp;#34;9e0010be-49e5-11ee-96c4-6ea4a1656548&amp;#34;
 resource.labels.project_id=&amp;#34;chat-acme&amp;#34;
 jsonPayload.console=&amp;#34;true&amp;#34;
-&lt;/code>&lt;/pre></description></item></channel></rss>
+&lt;/code>&lt;/pre></description></item><item><title>Docs: Troubleshooting</title><link>http://kubedr.ai/docs/troubleshooting/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/troubleshooting/</guid><description>
+&lt;h2 id="timeout-waiting-for-weaviate-client-to-connect-to-db">Timeout waiting for weaviate client to connect to DB&lt;/h2>
+&lt;p>When KubeDR runs it will block waiting to establish a connection to the Weaviate database.
+While it is waiting it will show messages like the following.&lt;/p>
+&lt;pre tabindex="0">&lt;code>2023/09/05 16:52:04 Weaviate not yet up. Waiting for another second.
+2023/09/05 16:52:05 Weaviate not yet up. Waiting for another second.
+&lt;/code>&lt;/pre>&lt;p>If it is unable to connect it will eventually timeout with an error like the following&lt;/p>
+&lt;pre tabindex="0">&lt;code>Error starting weaviate weaviate did not start up in 1m0s. Either the Weaviate URL &amp;#34;http://127.0.0.1:53912/v1&amp;#34; is wrong or Weaviate did not start up in the interval given in &amp;#39;startupTimeout&amp;#39;
+&lt;/code>&lt;/pre>&lt;p>There are two possible causes. There is already a weaviate process running and this is
+preventing KubeDR from starting a new weaviate process.&lt;/p>
+&lt;p>To check for such processes run &lt;code>ps -ef | grep weaviate&lt;/code> e.g&lt;/p>
+&lt;pre tabindex="0">&lt;code>&amp;gt;ps -ef | grep weaviate
+501 97365 716 0 4:51PM ttys001 0:01.28 weaviate --scheme=http --port 52889
+&lt;/code>&lt;/pre>&lt;p>Kill the running process by running&lt;/p>
+&lt;pre tabindex="0">&lt;code>pkill -x weaviate
+&lt;/code>&lt;/pre>&lt;p>The other possible cause is that you set &lt;code>dbConfig.url&lt;/code> to point to an existing instance of weaviate but aren&amp;rsquo;t
+actually running weaviate at that URL. To check your configuration you can run&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr config get
+&lt;/code>&lt;/pre>&lt;p>If &lt;code>dbConfig.url&lt;/code> is set to a non empty string there are two possible ways to fix the connection issue&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Unset &lt;code>dbConfig.url&lt;/code>&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr config set dbConfig.url=&amp;#34;&amp;#34;
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>unsetting it will cause kubedr to launch weaviate&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Start weaviate at the URL you set&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>
