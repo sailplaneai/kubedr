@@ -420,4 +420,22 @@ actually running weaviate at that URL. To check your configuration you can run&l
 &lt;li>
 &lt;p>Start weaviate at the URL you set&lt;/p>
 &lt;/li>
-&lt;/ol></description></item></channel></rss>
+&lt;/ol>
+&lt;h2 id="weaviate-error-unable-to-resolve-node-name-to-host">Weaviate Error Unable to Resolve node name to host&lt;/h2>
+&lt;p>When running KubeDR you get an error like the following&lt;/p>
+&lt;pre tabindex="0">&lt;code>explorer: get class: vector search: object vector search at index goals: remote shard 2a4JrhIUoDS4: resolve node name &amp;#34;some.host.name&amp;#34; to host
+Failed to query runbook entries
+&lt;/code>&lt;/pre>&lt;p>This is an issue with Weaviate not obtaining a stable hostname (refer to the &lt;a href="https://weaviate.io/developers/weaviate/more-resources/migration-guide#why-is-a-data-migration-necessary">docs&lt;/a>).&lt;/p>
+&lt;p>You can fix this by configuring KubeDR to explicitly set the name through the environment variable &lt;code>CLUSTER_HOSTNAME&lt;/code>.
+Edit &lt;code>${HOME}/.kubedr/config.yaml&lt;/code> and set the environment variable in the &lt;code>DBCONFIG&lt;/code> section e.g.&lt;/p>
+&lt;pre tabindex="0">&lt;code>apiVersion: &amp;#34;&amp;#34;
+kind: &amp;#34;&amp;#34;
+dbConfig:
+path: &amp;#34;&amp;#34;
+url: &amp;#34;&amp;#34;
+env:
+- name: CLUSTER_HOSTNAME
+value: some.host.name
+...
+&lt;/code>&lt;/pre>&lt;p>Set the value to the value in the error message.&lt;/p>
+&lt;p>&lt;strong>Important&lt;/strong> Since KubeDR is starting Weaviate in a subprocess simply setting &lt;code>CLUSTER_HOSTNAME&lt;/code> in your environment won&amp;rsquo;t work.&lt;/p></description></item></channel></rss>
