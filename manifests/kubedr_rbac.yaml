@@ -27,6 +27,10 @@ rules:
   resources: ["*"]
   verbs: ["get", "list"]
 
+- apiGroups: ["apps"]
+  resources: ["*"]
+  verbs: ["get", "list"]
+
 - apiGroups: ["batch"]
   resources: ["*"]
   verbs: ["get", "list"]
