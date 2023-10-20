@@ -244,7 +244,14 @@ For now you have to manually author them.&lt;/p>
 | | | | identity is not enabled on the | | |
 ...
 &lt;/code>&lt;/pre>&lt;/li>
-&lt;/ol></description></item><item><title>Docs: AI Safety</title><link>http://kubedr.ai/docs/safety/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/safety/</guid><description>
+&lt;/ol></description></item><item><title>Docs: Generate</title><link>http://kubedr.ai/docs/generate/</link><pubDate>Thu, 19 Oct 2023 14:29:00 -0400</pubDate><guid>http://kubedr.ai/docs/generate/</guid><description>
+&lt;p>This page describes how to use KubeDR to generate Kustomize filter functions based on an API specification.&lt;/p>
+&lt;h2 id="ask-kubedr-to-generate-a-filter-function">Ask KubeDR to generate a filter function&lt;/h2>
+&lt;p>To ask KubeDR to generate a filter function use the &lt;code>generate&lt;/code> sub-command&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr generate &amp;lt;API specification path&amp;gt;
+&lt;/code>&lt;/pre>&lt;p>For example, to build a filter function which changes the prefix of all docker images you can use &lt;a href="imageprefix.go">imageprefix.go&lt;/a>&lt;/p>
+&lt;pre tabindex="0">&lt;code>kubedr generate imageprefix.go
+&lt;/code>&lt;/pre>&lt;p>If the file is in a GitHub repo, the agent will generate a commit to generate the filter function implementation. If not, the agent will simply add the go files to implement the function.&lt;/p></description></item><item><title>Docs: AI Safety</title><link>http://kubedr.ai/docs/safety/</link><pubDate>Thu, 06 Apr 2023 09:49:12 -0700</pubDate><guid>http://kubedr.ai/docs/safety/</guid><description>
 &lt;p>KubeDR has two different mechanisms to ensure it uses tools safely and doesn&amp;rsquo;t perform destructive actions.&lt;/p>
 &lt;ul>
 &lt;li>Human approval of actions&lt;/li>
