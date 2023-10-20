@@ -13,10 +13,10 @@ This page describes how to use KubeDR to generate Kustomize filter functions bas
 To ask KubeDR to generate a filter function use the `generate` sub-command
 
 ```
-kubedr generate <path API specification>
+kubedr generate <API specification path>
 ```
 
-For example, to build a filter function which changes prefix of all docker images you can use [imageprefix.go](imageprefix.go)
+For example, to build a filter function which changes the prefix of all docker images you can use [imageprefix.go](imageprefix.go)
 
 ```
 kubedr generate imageprefix.go
